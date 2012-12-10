@@ -12,22 +12,11 @@ module SearchEngineSubmitter
 
   class << self
     def submit_sitemap_url(url, options = DEFAULT_OPTIONS)
-      to = Array(options[:to]).map(&:to_sym)
-      to = to.map!{ |to| to == :yahoo ? :bing : to }.uniq
-      responses = []
-      to.each do |engine|
-        begin
-          uri = URI(SEARCH_ENGINE_URL[engine] + url.to_s)
-          responses << uri.read
-        rescue OpenURI::HTTPError
-          raise SearchEngineSubmitter::InvalidSitemapError
-        end
-      end
-      responses
+      engines = get_engines_from options
+      engines.map { |engine| submit_url_to_search_engine url, engine }
     end
     alias_method :submit_rss_url, :submit_sitemap_url
   end
-
 
   # Mixin for HTTP URIs
   module SubmitURI
@@ -39,6 +28,23 @@ module SearchEngineSubmitter
 
   class InvalidSitemapError < Exception
   end
+
+  private
+
+    class << self
+      def get_engines_from(options)
+        engines = Array(options[:to]).map(&:to_sym)
+        engines.map{ |to| to == :yahoo ? :bing : to }.uniq
+      end
+
+      def submit_url_to_search_engine(url, engine)
+        begin
+          return URI(SEARCH_ENGINE_URL[engine] + url.to_s).read
+        rescue OpenURI::HTTPError
+          raise SearchEngineSubmitter::InvalidSitemapError
+        end
+      end
+    end
 end
 
 module URI
