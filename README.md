@@ -53,6 +53,8 @@ SearchEngineSubmitter.submit_rss_url my_rss_feed, :to => :yahoo
 URI(my_rss_feed).submit_rss :to => [:google, :bing]
 ```
 
+The return value of all of these methods is an array of [`OpenURI::Meta`](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/open-uri/rdoc/OpenURI/Meta.html) objects containing the responses of each search engine submittal.
+
 ## Contributing
 
 1. Fork it
