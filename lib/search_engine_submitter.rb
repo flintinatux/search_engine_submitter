@@ -8,7 +8,9 @@ module SearchEngineSubmitter
     :bing   => 'http://www.bing.com/webmaster/ping.aspx?siteMap='
   }
 
-  def self.submit_sitemap_url(url, options = { :to => :google })
+  DEFAULT_OPTIONS = { :to => [:google, :bing] }
+
+  def self.submit_sitemap_url(url, options = DEFAULT_OPTIONS)
     to = Array(options[:to]).map(&:to_sym)
     response = nil
     to.each do |engine|
@@ -24,7 +26,7 @@ module SearchEngineSubmitter
 
   # Mixin for HTTP URIs
   module SubmitURI
-    def submit_sitemap(options)
+    def submit_sitemap(options = DEFAULT_OPTIONS)
       SearchEngineSubmitter.submit_sitemap_url(self, options)
     end
   end
