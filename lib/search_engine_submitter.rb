@@ -13,7 +13,7 @@ module SearchEngineSubmitter
   class << self
     def submit_sitemap_url(url, options = DEFAULT_OPTIONS)
       to = Array(options[:to]).map(&:to_sym)
-      to.map!{ |to| to == :yahoo ? :bing : to }.uniq!
+      to = to.map!{ |to| to == :yahoo ? :bing : to }.uniq
       responses = []
       to.each do |engine|
         begin
