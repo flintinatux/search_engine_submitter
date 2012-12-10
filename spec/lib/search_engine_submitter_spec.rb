@@ -7,13 +7,13 @@ describe SearchEngineSubmitter do
 
   shared_examples "a submitter" do
     it "should submit a good url" do
-      response = subject.submit_sitemap_url sitemap_url, :to => search_engine
-      response.status.should eq ["200", "OK"]
+      responses = subject.submit_sitemap_url sitemap_url, :to => search_engine
+      responses.each { |r| r.status.should eq ["200", "OK"] }
     end
 
     it "should submit a good URI" do
-      response = URI(sitemap_url).submit_sitemap :to => search_engine
-      response.status.should eq ["200", "OK"]
+      responses = URI(sitemap_url).submit_sitemap :to => search_engine
+      responses.each { |r| r.status.should eq ["200", "OK"] }
     end
   end
   
@@ -39,13 +39,13 @@ describe SearchEngineSubmitter do
 
     describe "with no :to option" do
       it "should submit a good url" do
-        response = subject.submit_sitemap_url sitemap_url
-        response.status.should eq ["200", "OK"]
+        responses = subject.submit_sitemap_url sitemap_url
+        responses.each { |r| r.status.should eq ["200", "OK"] }
       end
 
       it "should submit a good URI" do
-        response = URI(sitemap_url).submit_sitemap
-        response.status.should eq ["200", "OK"]
+        responses = URI(sitemap_url).submit_sitemap
+        responses.each { |r| r.status.should eq ["200", "OK"] }
       end
     end
   end

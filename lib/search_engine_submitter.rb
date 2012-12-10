@@ -1,4 +1,4 @@
-require 'search_engine_submitter/version'
+# require 'search_engine_submitter/version'
 require 'open-uri'
 
 module SearchEngineSubmitter
@@ -12,16 +12,17 @@ module SearchEngineSubmitter
 
   def self.submit_sitemap_url(url, options = DEFAULT_OPTIONS)
     to = Array(options[:to]).map(&:to_sym)
-    response = nil
+    to.map!{ |to| to == :yahoo ? :bing : to }.uniq!
+    responses = []
     to.each do |engine|
       begin
         uri = URI(SEARCH_ENGINE_URL[engine] + url.to_s)
-        response = uri.read
+        responses << uri.read
       rescue OpenURI::HTTPError
         raise SearchEngineSubmitter::InvalidSitemapError
       end
     end
-    response
+    responses
   end
 
   # Mixin for HTTP URIs
