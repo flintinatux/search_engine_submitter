@@ -1,4 +1,4 @@
-# SearchEngineSubmitter
+# SearchEngineSubmitter  [![Build Status](https://secure.travis-ci.org/flintinatux/search_engine_submitter.png)](http://travis-ci.org/flintinatux/search_engine_submitter) [![Dependency Status](https://gemnasium.com/flintinatux/search_engine_submitter.png)](https://gemnasium.com/flintinatux/search_engine_submitter) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/flintinatux/search_engine_submitter)
 
 A tool to make the submission of sitemaps and RSS/Atom feeds to search engines as painless as possible. Use it to notify Big-G and friends of updates to your blog, or to ping newly created backlinks for your latest SEO campaign.
 
@@ -22,7 +22,6 @@ To submit a sitemap or RSS feed url to all three major search engines:
 
 ```ruby
 require 'search_engine_submitter'
-
 my_sitemap = 'http://testdomain.com/sitemap.xml'
 SearchEngineSubmitter.submit_sitemap_url my_sitemap
 ```
