@@ -48,5 +48,17 @@ describe SearchEngineSubmitter do
         responses.each { |r| r.status.should eq ["200", "OK"] }
       end
     end
+
+    describe "with RSS alias methods" do
+      it "should submit a good url" do
+        responses = subject.submit_rss_url sitemap_url
+        responses.each { |r| r.status.should eq ["200", "OK"] }
+      end
+
+      it "should submit a good URI" do
+        responses = URI(sitemap_url).submit_rss
+        responses.each { |r| r.status.should eq ["200", "OK"] }
+      end
+    end
   end
 end
