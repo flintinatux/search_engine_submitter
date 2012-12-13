@@ -60,5 +60,16 @@ describe SearchEngineSubmitter do
         responses.each { |r| r.status.should eq ["200", "OK"] }
       end
     end
+
+    describe "with new object format" do
+      let(:submitter) { SearchEngineSubmitter::Submitter.new :url => sitemap_url }
+
+      it "should submit a url" do
+        engines.each do |engine|
+          submitter.submit_sitemap :to => engine
+        end
+        submitter.submit_sitemap
+      end
+    end
   end
 end
