@@ -16,6 +16,10 @@ Or install it yourself as:
 
     $ gem install search_engine_submitter
 
+## Changes
+
+The latest update introduced a breaking change by switching from class methods to object methods. The new changes will make it much easier to test, use, and maintain. Sorry for any inconvience! See Usage below for details on the new syntax.
+
 ## Usage
 
 To submit a sitemap or RSS feed url to all three major search engines:
@@ -23,23 +27,23 @@ To submit a sitemap or RSS feed url to all three major search engines:
 ```ruby
 require 'search_engine_submitter'
 my_sitemap = 'http://testdomain.com/sitemap.xml'
-SearchEngineSubmitter.submit_sitemap_url my_sitemap
+submitter = SearchEngineSubmitter::Submitter.new
+submitter.submit_sitemap_url my_sitemap
 ```
 
-Use the `:to` option to specify which search engines you want for submittal. You can choose from `:google`, `:yahoo`, or `:bing`.
+You can also specify the search engines you want. Choose from any combination of `:google`, `:yahoo`, and `:bing`. You can even submit a URI:
 
 ```ruby
-SearchEngineSubmitter.submit_sitemap_url my_sitemap, :to => [:google, :yahoo]
+submitter = SearchEngineSubmitter::Submitter.new(:engines => [:google, :yahoo])
+submitter.submit_sitemap_url my_sitemap
+
+# or...
+
+submitter.engines = [:bing]
+submitter.submit_sitemap_url URI(my_sitemap)
 ```
 
-You can also submit a URI:
-
-```ruby
-my_sitemap_uri = URI(my_sitemap)
-SearchEngineSubmitter.submit_sitemap_url my_sitemap_uri
-```
-
-Or even submit a URI directly:
+You can also submit a URI directly. Use the `:to` option to specify your preferred engines.
 
 ```ruby
 my_sitemap_uri.submit_sitemap :to => :google
@@ -49,7 +53,7 @@ All search engines consider RSS or Atom feeds to be acceptable formats for sitem
 
 ```ruby
 my_rss_feed = 'http://testdomain.com/rss'
-SearchEngineSubmitter.submit_rss_url my_rss_feed, :to => :yahoo
+submitter.submit_rss_url my_rss_feed
 URI(my_rss_feed).submit_rss :to => [:google, :bing]
 ```
 
