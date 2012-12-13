@@ -14,11 +14,12 @@ module SearchEngineSubmitter
   class Submitter
     attr_reader :engines
 
-    def initialize(*engine_list)
-      @engines = get_engines_from engine_list
+    def initialize(options={})
+      engine_list = options[:engines] || []
+      @engines = get_engines_from engine_list 
     end
 
-    def engines=(*engine_list)
+    def engines=(engine_list)
       @engines = get_engines_from engine_list
     end
 
@@ -30,6 +31,7 @@ module SearchEngineSubmitter
     private
 
       def get_engines_from(engine_list)
+        engine_list = Array(engine_list)
         return DEFAULT_ENGINES if engine_list.empty?
         engine_list.map(&:to_sym).map{ |engine| engine == :yahoo ? :bing : engine }.uniq
       end
@@ -41,15 +43,6 @@ module SearchEngineSubmitter
           raise InvalidSitemapError.new(e.message)
         end
       end
-  end
-
-  class << self
-    def submit_sitemap_url(url, options={})
-      submitter = Submitter.new
-      submitter.engines = options[:to] if options[:to]
-      submitter.submit_sitemap_url url
-    end
-    alias_method :submit_rss_url, :submit_sitemap_url
   end
 
   # Mixin for HTTP URIs
